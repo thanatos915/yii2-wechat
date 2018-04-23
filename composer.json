@@ -1,0 +1,21 @@
+{
+    "name": "yii2-wechat/thanatosxia",
+    "description": "WeChat SDK for yii2, based on overtrue/easywechat",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "thanatos",
+            "email": "thanatos915@163.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "overtrue/wechat": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "thanatos\\wechat\\": "src"
+        }
+    }
+}
