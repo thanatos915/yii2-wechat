@@ -1,5 +1,5 @@
 {
-    "name": "yii2-wechat/thanatosxia",
+    "name": "thanatosxia/yii2-wechat",
     "description": "WeChat SDK for yii2, based on overtrue/easywechat",
     "type": "yii2-extension",
     "license": "MIT",
