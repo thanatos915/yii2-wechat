@@ -1,19 +1,31 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thanatos
- * Date: 2018/4/23
- * Time: 下午2:17
- */
 
 namespace thanatos\wechat;
 
 
+use EasyWeChat\Factory;
 use Yii;
 use yii\base\Component;
+use yii\base\Exception;
 
-class Wechat  extends Component
+/**
+ * Class Wechat
+ * @property \EasyWeChat\Payment\Application|\EasyWeChat\OfficialAccount\Application|\EasyWeChat\MiniProgram\Application|\EasyWeChat\OpenPlatform\Application|\EasyWeChat\Work\Application $app
+ * @package thanatos\wechat
+ */
+class Wechat extends Component
 {
+
+    /**
+     * Application type
+     * official 公众号
+     * miniProgram 小程序
+     * open 开放平台
+     * weWork 企业微信
+     * payment 微信支付
+     * @var string
+     */
+    public $app_type = 'official';
 
     /**
      * AppID
@@ -31,7 +43,7 @@ class Wechat  extends Component
      * Token
      * @var string
      */
-    public $token  = '';
+    public $token = '';
 
     /**
      * EncodingAESKey 兼容与安全模式下请一定要填写
@@ -44,7 +56,7 @@ class Wechat  extends Component
      * array(default)/collection/object/raw
      * @var string
      */
-    public $response_type = '';
+    public $response_type = 'object';
 
     /**
      *
@@ -78,6 +90,52 @@ class Wechat  extends Component
      */
     public $oauth = [];
 
+    /**
+     * @var \EasyWeChat\Payment\Application|\EasyWeChat\OfficialAccount\Application|\EasyWeChat\MiniProgram\Application|\EasyWeChat\OpenPlatform\Application|\EasyWeChat\Work\Application
+     */
+    private $_app;
+
+    /**
+     * get App
+     * @return \EasyWeChat\MiniProgram\Application|\EasyWeChat\OfficialAccount\Application|\EasyWeChat\OpenPlatform\Application|\EasyWeChat\Payment\Application|\EasyWeChat\Work\Application|null
+     */
+    public function getApp()
+    {
+        if ($this->_app === null) {
+            $this->setApp();
+        }
+
+        return $this->_app;
+    }
+
+    /**
+     * set App
+     */
+    public function setApp()
+    {
+        $app = null;
+        $config = $this->combineConfig();
+        switch ($this->app_type) {
+            case 'official':
+                $app = Factory::officialAccount($config);
+                break;
+            case 'miniProgram':
+                $app = Factory::miniProgram($config);
+                break;
+            case 'open':
+                $app = Factory::openPlatform($config);
+                break;
+            case 'weWork':
+                $app = Factory::work($config);
+                break;
+            case 'payment':
+                $app = Factory::payment($config);
+                break;
+        }
+
+        $this->_app = $app;
+        unset($app);
+    }
 
     /**
      *
@@ -88,4 +146,57 @@ class Wechat  extends Component
     {
         return strpos(Yii::$app->request->userAgent, "MicroMessenger") !== false;
     }
+
+    /**
+     * validate wechat config
+     * @throws Exception
+     */
+    public function validateConfig()
+    {
+        if (empty($this->app_id))
+            throw new Exception('AppID is required');
+
+        if (empty($this->secret))
+            throw new Exception('AppSecret is required');
+
+    }
+
+    /**
+     * combine config
+     * @return array
+     * @throws Exception
+     */
+    protected function combineConfig()
+    {
+        $this->validateConfig();
+        $config = [
+            'app_id' => $this->app_id,
+            'secret' => $this->secret,
+            'token' => $this->token,
+            'aes_key' => $this->aes_key,
+        ];
+        if ($this->response_type)
+            $config['response_type'] = $this->response_type;
+
+        if (is_array($this->log) && $this->log != null) {
+            $config['log'] = $this->log;
+        } else {
+            $config['log'] = [
+                'level' => 'debug',
+                'permission' => '0777',
+                'file' => Yii::getAlias('@runtime') . '/logs/wechat.log'
+            ];
+        }
+
+
+        if (is_array($this->http) && $this->http != null)
+            $config['http'] = $this->http;
+
+        if (is_array($this->oauth) && $this->oauth != null)
+            $config['oauth'] = $this->oauth;
+
+        return $config;
+
+    }
+
 }
