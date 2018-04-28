@@ -28,4 +28,10 @@ class WechatUser extends Model
     public $groupid;
     public $subscribe_scene;
 
+    public function rules()
+    {
+        return [
+            [['$subscribe', 'openid', 'nickname', 'sex', 'language', 'city', 'province', 'country', 'headimgurl', 'subscribe_time', 'unionid', 'remark', 'groupid', 'subscribe_scene'], 'safe']
+        ];
+    }
 }
