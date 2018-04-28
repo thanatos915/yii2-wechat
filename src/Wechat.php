@@ -180,6 +180,7 @@ class Wechat extends Component
 
         if (is_array($this->log) && $this->log != null) {
             $config['log'] = $this->log;
+            $config['log'] = Yii::getAlias($config['log']['file']);
         } else {
             $config['log'] = [
                 'level' => 'debug',
@@ -196,7 +197,6 @@ class Wechat extends Component
             $config['oauth'] = $this->oauth;
 
         return $config;
-
     }
 
 }

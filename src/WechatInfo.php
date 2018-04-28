@@ -11,7 +11,7 @@ namespace thanatos\wechat;
 
 use yii\base\Model;
 
-class WechatUser extends Model
+class WechatInfo extends Model
 {
     public $subscribe;
     public $openid;
