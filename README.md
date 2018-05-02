@@ -1,10 +1,10 @@
 <p align="center">
     </a>
-    <h1 align="center">Aliyun Oss Sdk Extension for Yii 2</h1>
+    <h1 align="center">Wechat Sdk Extension for Yii 2</h1>
     <br>
 </p>
 
- based on [aliyun/aliyun-oss-php-sdk](https://github.com/aliyun/aliyun-oss-php-sdk)
+ based on [overtrue/wechat](https://github.com/overtrue/wechat)
 
 [![Latest Stable Version](https://poser.pugx.org/thanatosxia/yii2-wechat/v/stable)](https://packagist.org/packages/thanatosxia/yii2-wechat)
 [![Total Downloads](https://poser.pugx.org/thanatosxia/yii2-wechat/downloads)](https://packagist.org/packages/thanatosxia/yii2-wechat)
@@ -63,7 +63,7 @@ class EventMessageHandle extends MessageHandler
 
         return parent::beforeHandle();
     }
-    
+
     // 默认的消息处理方法
     public function handleDefault()
     {
@@ -75,11 +75,11 @@ class EventMessageHandle extends MessageHandler
     {
         return $this->wechatInfo->unionid;
     }
-    
+
     // 处理用户关注事件
      public function eventSubscribe()
      {
-     
+
      }
 
 }
