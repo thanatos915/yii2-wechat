@@ -202,7 +202,7 @@ class Wechat extends Component
             'mch_id' => $this->mch_id,
             'key' => $this->key,
             'cert_path' => $this->cert_path,
-            'key_pay' => $this->key_path,
+            'key_path' => $this->key_path,
             'notify_url' => $this->notify_url,
             'sandbox' => $this->sandbox
         ];
